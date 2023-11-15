@@ -19,6 +19,7 @@ public class Errors extends JLabel {
 			put("java.lang.ClassCastException:","<html><h2>그런식의 케스팅은 안되는것 같아요</h2><h4>업,다운케스팅중 뭔가 잘못되었겠죠</h4>");// 이것도 오타로써 받아들이는듯
 			put("java.lang.OutOfMemoryError:","<html><h2>메모리 넘쳐요...</h2><h4></h4>");
 			put("java.lang.NegativeArraySizeException:","<html><h2>배열의 크기가 음수요...?</h2><h4>무슨 -를 배열에 써넣는건가요..</h4>");
+			put("java.lang.NoClassDefFoundError:","<html><h2>클레스 도 제대로 못쓰는 허접~</h2><h4>자바공부 다시하고와~~</h4>");
 			//put("","<html><h2></h2><h4></h4>");
 		}
 	};

@@ -39,7 +39,7 @@ public class sendCmd {
 			while ((outputLine = std.readLine()) != null) {
 				outputMessage += outputLine + "\r\n";
 			}
-			//System.out.println(outputMessage);// 오류 출력 스윙으로 넘기는 기능 추가로 비활성화함
+			System.out.println(outputMessage);// 오류 출력 스윙으로 넘기는 기능 추가로 비활성화함
 			p.waitFor();
 
 		} catch (Exception e) {

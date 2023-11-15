@@ -39,10 +39,10 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 
 			while (true) {
 
-				Message += datas[9 + i] + "\n";
+				Message += datas[7 + i] + "\n";
 
-				if (datas[9 + i].contains("error")) {
-					if (!datas[9 + i].contains("error:"))
+				if (datas[7 + i].contains("error")) {
+					if (!datas[7 + i].contains("error:"))
 						break;
 				}
 				i++;
