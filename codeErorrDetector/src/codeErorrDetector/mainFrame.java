@@ -1,22 +1,11 @@
 package codeErorrDetector;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class mainFrame extends JFrame {
@@ -33,20 +22,21 @@ public class mainFrame extends JFrame {
 	private JMenu runMenu;
 	private JMenuBar mb;
 	private JMenu fileMenu;
-	
+
 	private Color color2 = new Color(0x55D8E7EB, false);
-	
+
 	public mainFrame() {
 		send.makeDir(); // 폴터준비
 		setTitle("ErrorDetector");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addWindowListener(new WindowCl());
 		getContentPane().setLayout(cards);
-
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		//setDefaultCloseOperation(EXIT_ON_CLOSE);
 		end = new endPage(this);
 		main = new MainPage(end, this);
 		end.getMain(main);
+		
 		createMenu();
-
 		setWhite();
 		add("start", main); // 창 전환을 위한 추가
 		add("end", end);
@@ -55,14 +45,15 @@ public class mainFrame extends JFrame {
 
 	}
 
+	
+	
 	private void createMenu() {
 
 		MenuActionListener listenr = new MenuActionListener();
-		
-		 mb = new JMenuBar();
-		 fileMenu = new JMenu("File");
 
-		
+		mb = new JMenuBar();
+		fileMenu = new JMenu("File");
+
 		JMenuItem newFile = new JMenuItem("NewFile");
 		newFile.addActionListener(listenr);
 		newFile.setAccelerator(KeyStroke.getKeyStroke('N', Event.CTRL_MASK)); // crt+n
@@ -95,14 +86,30 @@ public class mainFrame extends JFrame {
 		runMenu.add(run);
 		mb.add(runMenu);
 		setJMenuBar(mb);
-		
-		
+
 	}
 
 	public void changePanel() { // 창전환 메소드
 		cards.next(this.getContentPane());
 	}
 
+	class WindowCl implements WindowListener{ // x로 종료시 메시지 출력
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			if (0 == JOptionPane.showConfirmDialog(null, "종료하시겠습니까?"))
+			setDefaultCloseOperation(EXIT_ON_CLOSE);
+		}
+
+		public void windowClosed(WindowEvent e) {}
+		public void windowOpened(WindowEvent e) {}
+		public void windowIconified(WindowEvent e) {}
+		public void windowDeiconified(WindowEvent e) {}
+		public void windowActivated(WindowEvent e) {}
+		public void windowDeactivated(WindowEvent e) {}
+		
+	}
+	
 	class MenuActionListener implements ActionListener {
 		JFileChooser root = new JFileChooser();
 
@@ -110,10 +117,10 @@ public class mainFrame extends JFrame {
 			String Cmd = e.getActionCommand();
 			switch (Cmd) { // 메뉴 아이템의 종류 구분
 			case "Load":
-				String loadPath = saveLoad(0);
-				if (loadPath != null) {
-					String loadedData = "";
-					String loadedName = Lname;
+				String loadPath = saveLoad(0); // 가져올 파일의 경로
+				if (loadPath != null) { // 선택이 되었다면
+					String loadedData = "";// 데이터 받을 변수 초기화
+					String loadedName = Lname;// 세이브 로드메소드에서 가져온 이름을 세팅
 					loadedName = loadedName.replace(".java", "");
 					try {
 						File loadedFile = new File(loadPath);
@@ -121,8 +128,10 @@ public class mainFrame extends JFrame {
 						while (sc.hasNextLine()) {
 							loadedData += sc.nextLine() + "\r\n";
 						}
-					} catch (FileNotFoundException a) {}
-					main.Reset(loadedName, loadedData);
+					} catch (FileNotFoundException a) {
+					}
+					main.Reset(loadedName, loadedData); // 초기화 함수를 가져와 해당 정보들로 초기화
+					JOptionPane.showMessageDialog(null, Lname + " 를 불러왔습니다.");
 				}
 				break;
 
@@ -147,7 +156,8 @@ public class mainFrame extends JFrame {
 				break;
 
 			case "Exit":
-				System.exit(0); // 나가기
+				if (0 == JOptionPane.showConfirmDialog(null, "종료하시겠습니까?"))
+					shutdown(); // 나가기
 				break;
 
 			case "Run": // 메소드로 구성할까...?
@@ -157,6 +167,10 @@ public class mainFrame extends JFrame {
 
 			}
 		}
+	}
+
+	public void shutdown() {
+		System.exit(0);
 	}
 
 	public String saveLoad(int Option) {
@@ -177,18 +191,19 @@ public class mainFrame extends JFrame {
 			if (Option == 0)
 				Lname = selectedFile.getName();
 		} else
-			return null;// 만약 취소시 기본 저장위치로(? 수정해야될듯)
+			return null;// 만약 취소시 기본 저장위치로
 		return selectedFile.getAbsolutePath() + "\\";
 	}
 
 	public static void main(String[] args) {
 		new mainFrame();
 	}
-	
+
 	public void setDark() {
-		mb.setBackground(Color.gray);
-		fileMenu.setBackground(Color.gray);
+		mb.setBackground(Color.DARK_GRAY);
+		fileMenu.setBackground(Color.DARK_GRAY);
 	}
+
 	public void setWhite() {
 		mb.setBackground(color2);
 		fileMenu.setBackground(color2);

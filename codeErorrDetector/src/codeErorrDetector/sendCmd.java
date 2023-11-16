@@ -1,24 +1,26 @@
 package codeErorrDetector;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Scanner;
 
 public class sendCmd {
 
 	private String outputMessage = "";
-
-	public void getCmd(String name) { // 저장된 .java파일을 컴파일 한다.
+	boolean ErrorShutdown;
+	ProcessBuilder b;
+	Process p;
+	
+	public sendCmd(){
+		ErrorShutdown = false;
+	}
+	
+	public boolean getCmd(String name) { // 저장된 .java파일을 컴파일 한다.
 
 		// System.out.print("in CMD:" + name + "\n");
 		try {
-			ProcessBuilder b = new ProcessBuilder("cmd");
+			b = new ProcessBuilder("cmd");
 			b.redirectErrorStream(true);
-			Process p = b.start();
+			p = b.start();
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 
@@ -45,12 +47,26 @@ public class sendCmd {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return ErrorShutdown;
 	}
 
 	public String returnErrorMassage() {
 		return outputMessage;
 	}
 
+	public void shutDownCmd() {
+		try {
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			writer.write("^C \n");
+			writer.flush();
+			writer.write("exit" + "\n");
+			writer.flush();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void makeDir() {
 		try {
 			ProcessBuilder b = new ProcessBuilder("cmd");

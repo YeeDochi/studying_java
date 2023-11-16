@@ -1,15 +1,34 @@
 package codeErorrDetector;
 
-public class runtimeTimer implements Runnable {
-	private double second = 0;
+import javax.swing.JOptionPane;
 
-	private boolean flag = false;
+public class runtimeTimer implements Runnable {
+	private double second;
+	private boolean flag;
+	private mainFrame F;
+	private sendCmd Send;
+
+	public runtimeTimer(mainFrame f,sendCmd send) {
+		F = f;
+		second = 0;
+		flag = false;
+		Send = send;
+
+	}
 
 	public void stopTimer() {
 		flag = true;
 	}
+
 	public double returnSecond() {
 		return second;
+	}
+
+	public void sutdown() {
+		if (second > 20) {
+			Send.shutDownCmd();
+			F.shutdown();
+		}
 	}
 
 	@Override
@@ -22,8 +41,10 @@ public class runtimeTimer implements Runnable {
 			}
 
 			second += 0.001;
-			//System.out.print(String.format("%.4f",second)+"\n");
-			if(flag)return;
+			sutdown(); // 20초 보다 오래 걸릴시 작동 종료
+			System.out.print(String.format("%.4f", second) + "\n");
+			if (flag)
+				return;
 		}
 	}
 }

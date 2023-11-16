@@ -32,7 +32,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 			}
 		}
 
-		if (Error.contains("java.lang.ClassNotFoundException:")) {
+		if (Error.contains("java.lang.ClassNotFoundException:")) { // 클레스 생성이 되지 않았을시에 오타가 있다는것
 			int i = 0;
 			Error = "1";
 			Message="";
@@ -47,9 +47,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 				}
 				i++;
 			}
-
 		}
-		
 		if (a) {
 			Error ="0";
 		}

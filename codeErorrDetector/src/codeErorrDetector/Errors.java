@@ -20,7 +20,7 @@ public class Errors extends JLabel {
 			put("java.lang.OutOfMemoryError:","<html><h2>메모리 넘쳐요...</h2><h4></h4>");
 			put("java.lang.NegativeArraySizeException:","<html><h2>배열의 크기가 음수요...?</h2><h4>무슨 -를 배열에 써넣는건가요..</h4>");
 			put("java.lang.NoClassDefFoundError:","<html><h2>클레스 도 제대로 못쓰는 허접~</h2><h4>자바공부 다시하고와~~</h4>");
-			//put("","<html><h2></h2><h4></h4>");
+			//put("","<html><h2></h2><h4></h4>"); 
 		}
 	};
 

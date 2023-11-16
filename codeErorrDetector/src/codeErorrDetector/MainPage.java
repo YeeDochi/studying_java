@@ -97,7 +97,7 @@ public class MainPage extends JPanel {
 	}
 
 	public void CompileRun() {
-		runtimeTimer timer = new runtimeTimer();
+		runtimeTimer timer = new runtimeTimer(F,send);
 		Thread th = new Thread(timer); // 쓰레드 컴파일 타임 측정
 		th.start();
 		data = comments.getText(); // 텍스트 읽어옴
