@@ -41,7 +41,7 @@ public class sendCmd {
 			while ((outputLine = std.readLine()) != null) {
 				outputMessage += outputLine + "\r\n";
 			}
-			System.out.println(outputMessage);// 오류 출력 스윙으로 넘기는 기능 추가로 비활성화함
+			//System.out.println(outputMessage);// 오류 출력 스윙으로 넘기는 기능 추가로 비활성화함
 			p.waitFor();
 
 		} catch (Exception e) {
@@ -67,7 +67,7 @@ public class sendCmd {
 		}
 	}
 	
-	public void makeDir() {
+	public void initDir() {
 		try {
 			ProcessBuilder b = new ProcessBuilder("cmd");
 			b.redirectErrorStream(true);
@@ -75,6 +75,10 @@ public class sendCmd {
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 			writer.write("mkdir C:\\testCode \n");
+			writer.flush();
+			writer.write("del C:\\testCode\\*.class \n");
+			writer.flush();
+			writer.write("exit" + "\n");
 			writer.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

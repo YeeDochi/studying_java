@@ -26,7 +26,7 @@ public class mainFrame extends JFrame {
 	private Color color2 = new Color(0x55D8E7EB, false);
 
 	public mainFrame() {
-		send.makeDir(); // 폴터준비
+		send.initDir(); // 폴터준비
 		setTitle("ErrorDetector");
 		addWindowListener(new WindowCl());
 		getContentPane().setLayout(cards);
