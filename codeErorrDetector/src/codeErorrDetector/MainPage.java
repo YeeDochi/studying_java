@@ -60,7 +60,7 @@ public class MainPage extends JPanel {
 			name = JOptionPane.showInputDialog("클레스의 이름을 입력하세요.", "Project");
 			if (name == null || name == "")
 				name = "Project";
-			comments.setText("public class " + name + "{\n\n public static void main(String[] args){\n\n}\n}");
+			comments.setText("public class " + name + "{\n\n 	public static void main(String[] args){\n\n 	}\n}");
 		} else {
 			name = Lname;
 			comments.setText(Ldata);
