@@ -11,7 +11,7 @@ public class endPage extends JPanel { // 단순한 출력페이지
 	private JPanel ButtonWindow = new JPanel(); // 버튼을 받는 페널
 	private findError find = new findError(); // 에러를 구분해주는 클레스
 	private JPanel errorWindow = new JPanel(); // 에러창 라벨을 받는페널
-	private Errors errorLabel = new Errors(); // 재밌는 에러 메세지 출력을 위한 라벨
+	private Errors errorLabel; // 재밌는 에러 메세지 출력을 위한 라벨
 	private JButton b = new JButton("돌아가기"); // 버튼들 색 변환을위해 밖으로 빼 두었다.
 	private JButton change = new JButton("다크모드");
 	
@@ -22,7 +22,9 @@ public class endPage extends JPanel { // 단순한 출력페이지
 	private Color color =new Color(0x55F3F3F0,false);
 	private Color color2 = new Color(0x55D8E7EB, false);
 	private Color color3 = new Color(0x55E5EBED, false); // 기본상태일때 쓰인 색들
-	public endPage(mainFrame f) {// 생성자가 메인프레임을 받아온다.
+	
+	public endPage(mainFrame f, sendCmd send) {// 생성자가 메인프레임을 받아온다.
+		errorLabel = new Errors(send);
 		setLayout(new BorderLayout()); // 창 자체의 레이아웃 보더레이아웃
 		ResultWindow.setLayout(new GridLayout(2, 0)); // 결과를 띄우는 페널은 
 		// ---------결과창-TEXT---------

@@ -7,7 +7,7 @@ public class sendCmd { // 대망의 컴파일을 위한 Cmd클레스
 	private String outputMessage = "";
 	private ProcessBuilder b;
 	Process p;
-	
+	private String varError =" "; // --release 8의 삽입을 위한 변수
 	
 	public void getCmd(String name) { // 저장된 .java파일을 컴파일 한다.
 
@@ -22,7 +22,9 @@ public class sendCmd { // 대망의 컴파일을 위한 Cmd클레스
 
 			writer.write("cd C:\\testCode\n");
 			writer.flush();
-			writer.write("javac -g " + name + ".java -encoding UTF-8\n"); // 인코딩은 그다지 차이가 없는것 같다.
+			writer.write("javac -g " + name + ".java -encoding UTF-8"+varError+"\n"); // 인코딩은 그다지 차이가 없는것 같다.
+			//사용되는 컴퓨터의 javac와 이코드의 자바 버전이 다른 오류가 발생했다. 
+			//이를 알려야 하기때문에 --release 8명령어를 해당 에러코드가 발생하면 다음 컴파일 부터 작동하도록 설계하였다.
 			writer.flush();
 			writer.write("java " + name + "\n");
 			writer.flush();
@@ -44,6 +46,11 @@ public class sendCmd { // 대망의 컴파일을 위한 Cmd클레스
 		}
 	}
 
+	public void setErrorFlagOn() {
+		varError = " --release 8 ";
+		System.out.print(varError);
+	}
+	
 	public String returnErrorMassage() { // cmd에서 출력되었던 모든 데이터를 넘긴다. 처리는 여기서 안함
 		return outputMessage;
 	}

@@ -58,6 +58,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 
 	public String returnErrorCode() {
 		return Error;
+		//return "java.lang.UnsupportedClassVersionError:";
 	}
 	public String returnMessage() {
 		return Message;

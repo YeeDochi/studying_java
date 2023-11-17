@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -27,14 +28,18 @@ public class mainFrame extends JFrame {
 	private Color color2 = new Color(0x55D8E7EB, false); // 기본 색상 메뉴 색
 
 	public mainFrame() {
+		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png");
+		//System.out.print(image);
+		ImageIcon img= new ImageIcon(image);
+		setIconImage(img.getImage());
 		send.initDir(); // 폴터준비
 		this.setTitle("ErrorDetector");
 		this.addWindowListener(new WindowCl()); // 창 종료시에 사용될 이벤트
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // 위에 이벤트때문에 x를 눌러도 닫히지 않도록 설정
 		// setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(cards); // 카드 레이아웃
-		this.end = new endPage(this); // end가 main을 받아와야 하지만 main보다 먼저 생성됨
-		main = new MainPage(end, this); // main은 정상적으로 인수를 받아온다.
+		this.end = new endPage(this,send); // end가 main을 받아와야 하지만 main보다 먼저 생성됨
+		main = new MainPage(end, this,send); // main은 정상적으로 인수를 받아온다.
 		end.getMain(main); // main이 생성되고나서 다시 인수를 넘겨준다.
 		this.createMenu(); // 메뉴바
 		this.setWhite(); // 기본색으로 설정

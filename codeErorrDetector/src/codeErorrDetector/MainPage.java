@@ -9,7 +9,7 @@ public class MainPage extends JPanel {
 	private String name; // 만든 클레스의 이름
 	// 자바는 파일 이름과 클레스의 이름이 같아야한다.
 	private DotJava dot = new DotJava(); // 저장해주는 객체
-	private sendCmd send = new sendCmd(); // cmd에서 컴파일,실행을 해주는 객체
+	private sendCmd send; // cmd에서 컴파일,실행을 해주는 객체
 	private JPanel CommentWindow = new JPanel(); // 스크롤바 적용을 위한 페널
 	private JPanel ButtonWindow = new JPanel(); // 버튼이 들어가는 페널
 	private JTextArea comments = new JTextArea(""); // 코드 입력창
@@ -24,11 +24,12 @@ public class MainPage extends JPanel {
 	private Color color2 = new Color(0x55D8E7EB, false); // 기본모드에 사용됨
 	private Color color3 = new Color(0x55E5EBED, false);
 
-	public MainPage(endPage end, mainFrame f) { // 결과창과 메인프레임을 매개변수로 받아온다.
+	public MainPage(endPage end, mainFrame f, sendCmd send) { // 결과창과 메인프레임을 매개변수로 받아온다.
 
 		this.Reset(); // 초기화
 		F = f; // 받아온 매게변수를 필드 멤버에 저장
 		End = end;
+		this.send =send;
 		this.setLayout(new BorderLayout());
 		// ---------입력창------------
 		CommentWindow.add(comments); // 입력창을 띄우는 페널

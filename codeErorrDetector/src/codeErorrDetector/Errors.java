@@ -6,6 +6,10 @@ import javax.swing.JLabel;
 
 public class Errors extends JLabel { // 에러 클레스는 에러 메세지를 받아 멘트를 라벨에 띄워준다.
 
+	sendCmd send;
+	public Errors(sendCmd temp) {
+		send = temp;
+	}
 	
 	HashMap<String, String> h1 = new HashMap<String, String>() { // 에러코드에 따른 메세지를 저장하는 헤시멥
 		{
@@ -20,7 +24,8 @@ public class Errors extends JLabel { // 에러 클레스는 에러 메세지를 
 			put("java.lang.OutOfMemoryError:","<html><h2>메모리 넘쳐요...</h2><h4></h4>");
 			put("java.lang.NegativeArraySizeException:","<html><h2>배열의 크기가 음수요...?</h2><h4>무슨 -를 배열에 써넣는건가요..</h4>");
 			put("java.lang.NoClassDefFoundError:","<html><h2>클레스 도 제대로 못쓰는 허접~</h2><h4>자바공부 다시하고와~~</h4>");
-			//put("","<html><h2></h2><h4></h4>"); 
+			put("java.lang.UnsupportedClassVersionError:","<html><h2>Javac와 Java의 버전이 맞질 않네요</h2><h4>자바 버전을 맞춰야겠네요,</h4><h4>다시 컴파일 해 보시겠어요?</h4>"); 
+			//put("","<html><h2></h2><h4></h4>"); /ㅊ .
 		}
 	};
 
@@ -28,6 +33,9 @@ public class Errors extends JLabel { // 에러 클레스는 에러 메세지를 
 		String output = h1.get(Code);
 		//System.out.print(output);
 		setText(output + time);
+		if(Code == "java.lang.UnsupportedClassVersionError:") {
+			send.setErrorFlagOn();
+		}
 	}
 
 }
