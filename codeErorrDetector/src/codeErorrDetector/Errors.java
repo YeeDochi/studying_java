@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import javax.swing.JLabel;
 
-public class Errors extends JLabel {
+public class Errors extends JLabel { // 에러 클레스는 에러 메세지를 받아 멘트를 라벨에 띄워준다.
 
 	
-	HashMap<String, String> h1 = new HashMap<String, String>() {
+	HashMap<String, String> h1 = new HashMap<String, String>() { // 에러코드에 따른 메세지를 저장하는 헤시멥
 		{
 			put("java.lang.instrument��", "<html><h2>클레스 명을 적지 않으셨네요</h2><h3>파일을 다시 만들어 보자구요</h3>");
 			put("0", "<html><h2>축하합니다. 오류가 없네요.</h2>");

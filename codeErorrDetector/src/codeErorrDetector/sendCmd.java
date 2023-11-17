@@ -1,32 +1,28 @@
 package codeErorrDetector;
 
 import java.io.*;
-import java.util.Scanner;
 
-public class sendCmd {
+public class sendCmd { // 대망의 컴파일을 위한 Cmd클레스
 
 	private String outputMessage = "";
-	boolean ErrorShutdown;
-	ProcessBuilder b;
+	private ProcessBuilder b;
 	Process p;
 	
-	public sendCmd(){
-		ErrorShutdown = false;
-	}
 	
-	public boolean getCmd(String name) { // 저장된 .java파일을 컴파일 한다.
+	public void getCmd(String name) { // 저장된 .java파일을 컴파일 한다.
 
 		// System.out.print("in CMD:" + name + "\n");
 		try {
-			b = new ProcessBuilder("cmd");
+			b = new ProcessBuilder("cmd"); // cmd를 만든다
 			b.redirectErrorStream(true);
-			p = b.start();
+			p = b.start(); // cmd시작
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+			//cmd명령어를 저장하는 버퍼 명령어를 쌓아둘 수 있지만 그냥 그때그떄 출력한다.
 
 			writer.write("cd C:\\testCode\n");
 			writer.flush();
-			writer.write("javac -g " + name + ".java -encoding UTF-8\n");
+			writer.write("javac -g " + name + ".java -encoding UTF-8\n"); // 인코딩은 그다지 차이가 없는것 같다.
 			writer.flush();
 			writer.write("java " + name + "\n");
 			writer.flush();
@@ -41,40 +37,39 @@ public class sendCmd {
 			while ((outputLine = std.readLine()) != null) {
 				outputMessage += outputLine + "\r\n";
 			}
-			//System.out.println(outputMessage);// 오류 출력 스윙으로 넘기는 기능 추가로 비활성화함
+			//System.out.println(outputMessage);// 디버깅 용으로 사용되는 print 
 			p.waitFor();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ErrorShutdown;
 	}
 
-	public String returnErrorMassage() {
+	public String returnErrorMassage() { // cmd에서 출력되었던 모든 데이터를 넘긴다. 처리는 여기서 안함
 		return outputMessage;
 	}
 
-	public void shutDownCmd() {
+	public void shutDownCmd() { // 긴급종료를 위한 메소드
 		try {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-			writer.write("^C \n");
+			writer.write("^C \n");// Ctrl+c 
 			writer.flush();
-			writer.write("exit" + "\n");
+			writer.write("exit" + "\n"); // 종료
 			writer.flush();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void initDir() {
-		try {
+	public void initDir() { //자바파일을 저장, 불러올 위치가 없으면 컴파일이 실행되지 않는다.
+		// 메인프레임 시작과 동시에 생성하기 위해 sendCmd메소드에서 분리
+		try { // 작동 방식은 같다.
 			ProcessBuilder b = new ProcessBuilder("cmd");
 			b.redirectErrorStream(true);
 			Process p = b.start();
 
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-			writer.write("mkdir C:\\testCode \n");
+			writer.write("mkdir C:\\testCode \n"); // 폴터 생성을 C드라이브로 잡아서 인지 관리자 권환이 없다면 만들어지지 않는 경우가 있다.
+													// 적어도 첫 실행은 관리자 실행이 필요할듯 하다.
 			writer.flush();
 			writer.write("del C:\\testCode\\*.class \n");
 			writer.flush();
