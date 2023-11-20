@@ -1,5 +1,7 @@
 package codeErorrDetector;
 
+import javax.swing.JOptionPane;
+
 public class runtimeTimer implements Runnable { // 런타임 측정을 위한 스레드
 	// 페널에 타이머를 만들려했으나 컴파일중에 먹통이 되어 스레드로 분류
 	private double second;
@@ -7,7 +9,7 @@ public class runtimeTimer implements Runnable { // 런타임 측정을 위한 �
 	private mainFrame F; // 강제종료를 위한 메인프레임
 	private sendCmd Send; // 커멘드창의 강제종료를 위한 cmd객체
 
-	public runtimeTimer(mainFrame f,sendCmd send) {
+	public runtimeTimer(mainFrame f, sendCmd send) {
 		F = f;
 		second = 0;
 		flag = false;

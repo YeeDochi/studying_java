@@ -28,8 +28,8 @@ public class mainFrame extends JFrame {
 	private Color color2 = new Color(0x55D8E7EB, false); // 기본 색상 메뉴 색
 
 	public mainFrame() {
-		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png");
-		//System.out.print(image);
+		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png"); 
+		// exe환경에서 작동하도록 경로를 따와서 적용하도록 변경
 		ImageIcon img= new ImageIcon(image);
 		setIconImage(img.getImage());
 		send.initDir(); // 폴터준비
@@ -108,11 +108,26 @@ public class mainFrame extends JFrame {
 	}
 
 	private class WindowCl implements WindowListener { // x로 종료시 메시지 출력
-
+		
 		@Override
 		public void windowClosing(WindowEvent e) { // x를 누르면 창이 닫히는 대신 이 이벤트가 실행
-			if (0 == JOptionPane.showConfirmDialog(null, "종료하시겠습니까?")) // 종료를 확인한다.
+			int temp = JOptionPane.showConfirmDialog(null, "종료전 저장하시겠습니까?");
+			if (0 == temp) {
+				String savePath = saveLoad(1);// 경로 호출
+				if (savePath != null) {
+					try {
+						data = main.returnCodeData(); // 입력되어있는 코드를 데이터로
+						dot.saveAsDotJava(savePath, data, main.returnName());// 따온 페스와 데이터,이름으로 .java로 저장
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(null, savePath + "에 저장되었습니다."); // 실행 알림
+				}
+				shutdown(); // 저장 되면 종료
+			}
+			else if( 1 == temp) { // 취소시 그냥 종료
 				setDefaultCloseOperation(EXIT_ON_CLOSE);
+			}
 		}
 
 		public void windowClosed(WindowEvent e) {
@@ -182,7 +197,21 @@ public class mainFrame extends JFrame {
 				break;
 
 			case "Exit":
-				if (0 == JOptionPane.showConfirmDialog(null, "종료하시겠습니까?"))
+				int temp = JOptionPane.showConfirmDialog(null, "종료전 저장하시겠습니까?");
+				if (0 == temp) {
+					savePath = saveLoad(1);// 경로 호출
+					if (savePath != null) {
+						try {
+							data = main.returnCodeData(); // 입력되어있는 코드를 데이터로
+							dot.saveAsDotJava(savePath, data, main.returnName());// 따온 페스와 데이터,이름으로 .java로 저장
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+						JOptionPane.showMessageDialog(null, savePath + "에 저장되었습니다."); // 실행 알림
+					}
+					shutdown();
+				}
+				else if(1 == temp)
 					shutdown(); // 나가기
 				break;
 
