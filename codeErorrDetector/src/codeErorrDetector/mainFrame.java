@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Scanner;
+
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -28,9 +30,9 @@ public class mainFrame extends JFrame {
 	private Color color2 = new Color(0x55D8E7EB, false); // 기본 색상 메뉴 색
 
 	public mainFrame() {
-		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png"); 
+		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png");
 		// exe환경에서 작동하도록 경로를 따와서 적용하도록 변경
-		ImageIcon img= new ImageIcon(image);
+		ImageIcon img = new ImageIcon(image);
 		setIconImage(img.getImage());
 		send.initDir(); // 폴터준비
 		this.setTitle("ErrorDetector");
@@ -38,8 +40,8 @@ public class mainFrame extends JFrame {
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE); // 위에 이벤트때문에 x를 눌러도 닫히지 않도록 설정
 		// setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(cards); // 카드 레이아웃
-		this.end = new endPage(this,send); // end가 main을 받아와야 하지만 main보다 먼저 생성됨
-		main = new MainPage(end, this,send); // main은 정상적으로 인수를 받아온다.
+		this.end = new endPage(this, send); // end가 main을 받아와야 하지만 main보다 먼저 생성됨
+		main = new MainPage(end, this, send); // main은 정상적으로 인수를 받아온다.
 		end.getMain(main); // main이 생성되고나서 다시 인수를 넘겨준다.
 		this.createMenu(); // 메뉴바
 		this.setWhite(); // 기본색으로 설정
@@ -108,9 +110,10 @@ public class mainFrame extends JFrame {
 	}
 
 	private class WindowCl implements WindowListener { // x로 종료시 메시지 출력
-		
+
 		@Override
 		public void windowClosing(WindowEvent e) { // x를 누르면 창이 닫히는 대신 이 이벤트가 실행
+			audio("경고음");
 			int temp = JOptionPane.showConfirmDialog(null, "종료전 저장하시겠습니까?");
 			if (0 == temp) {
 				String savePath = saveLoad(1);// 경로 호출
@@ -124,8 +127,7 @@ public class mainFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, savePath + "에 저장되었습니다."); // 실행 알림
 				}
 				shutdown(); // 저장 되면 종료
-			}
-			else if( 1 == temp) { // 취소시 그냥 종료
+			} else if (1 == temp) { // 취소시 그냥 종료
 				setDefaultCloseOperation(EXIT_ON_CLOSE);
 			}
 		}
@@ -172,6 +174,7 @@ public class mainFrame extends JFrame {
 					} catch (FileNotFoundException a) {
 					}
 					main.Reset(loadedName, loadedData); // 초기화 함수를 가져와 위의 정보들로 초기화
+					audio("알림음");
 					JOptionPane.showMessageDialog(null, Lname + " 를 불러왔습니다.");
 				}
 				break;
@@ -185,11 +188,13 @@ public class mainFrame extends JFrame {
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
+					audio("알림음");
 					JOptionPane.showMessageDialog(null, savePath + "에 저장되었습니다."); // 실행 알림
 				}
 				break;
 
 			case "NewFile": // 새로운 클레스 이름을 받아오며 초기화
+				audio("경고음");
 				int result = JOptionPane.showConfirmDialog(null, "초기화 하시겠습니까?");
 				if (result == JOptionPane.YES_OPTION)
 					main.Reset(); // 초기화 함수
@@ -197,6 +202,7 @@ public class mainFrame extends JFrame {
 				break;
 
 			case "Exit":
+				audio("경고음");
 				int temp = JOptionPane.showConfirmDialog(null, "종료전 저장하시겠습니까?");
 				if (0 == temp) {
 					savePath = saveLoad(1);// 경로 호출
@@ -207,11 +213,11 @@ public class mainFrame extends JFrame {
 						} catch (Exception ex) {
 							ex.printStackTrace();
 						}
+						audio("알림음");
 						JOptionPane.showMessageDialog(null, savePath + "에 저장되었습니다."); // 실행 알림
 					}
 					shutdown();
-				}
-				else if(1 == temp)
+				} else if (1 == temp)
 					shutdown(); // 나가기
 				break;
 
@@ -225,6 +231,7 @@ public class mainFrame extends JFrame {
 	}
 
 	public void shutdown() { // 종료함수, 스레드에서 강제종료를 위해 분리시킴
+		audio("경고음");
 		System.exit(0);
 	}
 
@@ -248,6 +255,17 @@ public class mainFrame extends JFrame {
 		} else
 			return null; // 취소 선택시 null리턴
 		return selectedFile.getAbsolutePath() + "\\"; // 성공적으로 따오면 해당 경로를 리턴한다.
+	}
+
+	public static void audio(String soundName) {
+		try {
+			URL sound = mainFrame.class.getClassLoader().getResource(soundName+".wav");
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(sound));
+			// clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip.start();
+		} catch (Exception e) {
+		}
 	}
 
 	public static void main(String[] args) {

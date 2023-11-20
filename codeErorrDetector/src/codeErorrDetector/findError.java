@@ -13,7 +13,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 	private String Message="";
 	boolean a;
 
-	public void findError_M(String resultData) {
+	public String findError_M(String resultData) {
 		a = true; // 만약 계속 true라면 에러 없음
 		String[] datas = resultData.split("\n");
 
@@ -54,6 +54,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 		if (a) { // 컴파일 성공
 			Error ="0";
 		}
+		return Error;
 	}
 
 	public String returnErrorCode() {

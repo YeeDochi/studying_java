@@ -8,12 +8,13 @@ public class runtimeTimer implements Runnable { // 런타임 측정을 위한 �
 	private boolean flag; // 타이머 정지를 위한 boolean
 	private mainFrame F; // 강제종료를 위한 메인프레임
 	private sendCmd Send; // 커멘드창의 강제종료를 위한 cmd객체
-
-	public runtimeTimer(mainFrame f, sendCmd send) {
+	private MainPage Main;
+	public runtimeTimer(mainFrame f, sendCmd send, MainPage main) {
 		F = f;
 		second = 0;
 		flag = false;
 		Send = send;
+		Main = main;
 
 	}
 
@@ -27,7 +28,7 @@ public class runtimeTimer implements Runnable { // 런타임 측정을 위한 �
 
 	public void sutdown() { // 런타임이 20초를 넘으면 비정상적인 무한루프
 		// cmd와 메인프레임을 강제 종료한다.
-		if (second > 20) {
+		if (second > 1) {
 			Send.shutDownCmd();
 			F.shutdown();
 		}
@@ -45,6 +46,7 @@ public class runtimeTimer implements Runnable { // 런타임 측정을 위한 �
 			second += 0.001;
 			sutdown(); // 20초 보다 오래 걸릴시 작동 종료
 			System.out.print(String.format("%.4f", second) + "\n");
+			//Main.returnTimer().setText(String.format("%.4f", second));
 			if (flag)
 				return;
 		}

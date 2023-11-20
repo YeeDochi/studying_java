@@ -2,6 +2,8 @@ package codeErorrDetector;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
+
 import javax.swing.*;
 
 public class endPage extends JPanel { // 단순한 출력페이지
@@ -12,6 +14,7 @@ public class endPage extends JPanel { // 단순한 출력페이지
 	private findError find = new findError(); // 에러를 구분해주는 클레스
 	private JPanel errorWindow = new JPanel(); // 에러창 라벨을 받는페널
 	private Errors errorLabel; // 재밌는 에러 메세지 출력을 위한 라벨
+	private JLabel errorImage;
 	private JButton b = new JButton("돌아가기"); // 버튼들 색 변환을위해 밖으로 빼 두었다.
 	private JButton change = new JButton("다크모드");
 	
@@ -24,7 +27,8 @@ public class endPage extends JPanel { // 단순한 출력페이지
 	private Color color3 = new Color(0x55E5EBED, false); // 기본상태일때 쓰인 색들
 	
 	public endPage(mainFrame f, sendCmd send) {// 생성자가 메인프레임을 받아온다.
-		errorLabel = new Errors(send);
+		errorLabel = new Errors(send,this);
+		errorImage  = new JLabel();
 		setLayout(new BorderLayout()); // 창 자체의 레이아웃 보더레이아웃
 		ResultWindow.setLayout(new GridLayout(2, 0)); // 결과를 띄우는 페널은 
 		// ---------결과창-TEXT---------
@@ -38,10 +42,11 @@ public class endPage extends JPanel { // 단순한 출력페이지
 		Result.setFont(new Font("Malgun Gothic",Font.BOLD,15));
 		
 		// ---------결과창-LABEL---------
-
+		errorWindow.setLayout(new GridLayout(0,2));
 		errorWindow.add(errorLabel);
 		errorWindow.setSize(100, 70);
 		errorWindow.setVisible(true);
+		errorWindow.add(errorImage);
 		ResultWindow.add(errorWindow, 1, 0);
 		add(ResultWindow, BorderLayout.CENTER);
 
@@ -95,9 +100,11 @@ public class endPage extends JPanel { // 단순한 출력페이지
 	
 	public void getData(String error, double timer) {
 		// Timer = timer;
-		find.findError_M(error);
+		String Error = find.findError_M(error);
+		if(Error =="0")F.audio("성공");
+		else F.audio("실패");
 		errorLabel.setFont(new Font("Malgun Gothic", Font.BOLD, 11)); // 폰트변경
-		errorLabel.getErrorCode(find.returnErrorCode(), "<h4>" + String.format("%.3f", timer) + "초 걸리셨네요</h4></html>");
+		errorLabel.getErrorCode(Error , "<h4>" + String.format("%.3f", timer) + "초 걸리셨네요</h4></html>");
 		//결과를 라벨창에 출력 런타임 시간정보도 출력한다.
 		if (find.returnErrorCode() == "1") // 에러코드 1은 오타가 있을시 발생한다.
 			// 이경우에는 오타가 발생한 부분을 따로 가져와 출력해준다.
@@ -106,6 +113,15 @@ public class endPage extends JPanel { // 단순한 출력페이지
 			Result.setText(find.returnErrorCode());// 결과 텍스트 에리어 출력
 	}
 
+	public void setResultImage(String Link) {
+		URL image = mainFrame.class.getClassLoader().getResource(Link); 
+		ImageIcon icon = new ImageIcon(image);
+		Image img = icon.getImage();
+		Image changedImage = img.getScaledInstance(200,140, Image.SCALE_FAST);	
+		icon = new ImageIcon(changedImage);
+		errorImage.setIcon(icon);
+	}
+	
 	public void setDark() { //다크모드
 
 		this.setBackground(Color.DARK_GRAY);

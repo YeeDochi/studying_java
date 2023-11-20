@@ -13,6 +13,7 @@ public class MainPage extends JPanel {
 	private JPanel CommentWindow = new JPanel(); // 스크롤바 적용을 위한 페널
 	private JPanel ButtonWindow = new JPanel(); // 버튼이 들어가는 페널
 	private JTextArea comments = new JTextArea(""); // 코드 입력창
+	private JLabel counter = new JLabel();
 	private mainFrame F; // 메인프레임
 	private endPage End; // 결과페널
 	private JScrollPane scroll; // 스크롤
@@ -50,7 +51,14 @@ public class MainPage extends JPanel {
 		ButtonWindow.add(b, 0, 0);
 		ButtonWindow.add(change, 1, 0);
 		this.add(ButtonWindow, BorderLayout.EAST);
-		// -------------------------
+		// --------카운터-------------- // 창에 시간초를 표기하고 싶었으나 무리였다.
+		/*for(int i = 2;i<7;i++) {
+			ButtonWindow.add(new JLabel());
+		}
+		ButtonWindow.add(counter);
+		counter.setText("00.000");
+		counter.setFont(new Font("Malgun Gothic", Font.BOLD, 20));*/
+		//--------------------------
 		this.setWhite(); // 기본모드 세팅
 		this.setSize(600, 400);
 		this.setVisible(true);
@@ -100,7 +108,7 @@ public class MainPage extends JPanel {
 	}
 
 	public void CompileRun() {
-		runtimeTimer timer = new runtimeTimer(F, send);
+		runtimeTimer timer = new runtimeTimer(F, send, this);
 		Thread th = new Thread(timer); // 쓰레드 컴파일 타임 측정
 		th.start();
 		data = comments.getText(); // 텍스트 읽어옴
@@ -121,6 +129,10 @@ public class MainPage extends JPanel {
 	public String returnCodeData() { // 코드 리턴
 		return comments.getText();
 	}
+	
+	public JLabel returnTimer() {
+		return counter;
+	}
 
 	public void setDark() {
 		this.setBackground(Color.DARK_GRAY);
@@ -137,6 +149,7 @@ public class MainPage extends JPanel {
 		comments.setForeground(Color.white);
 		b.setForeground(Color.white);
 		change.setForeground(Color.white);
+		counter.setForeground(Color.white);
 		Dark = true;
 	}
 
@@ -155,6 +168,7 @@ public class MainPage extends JPanel {
 		comments.setForeground(Color.black);
 		b.setForeground(Color.black);
 		change.setForeground(Color.black);
+		counter.setForeground(Color.black);
 		Dark = false;
 	}
 }
