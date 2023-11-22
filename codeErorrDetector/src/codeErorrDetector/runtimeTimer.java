@@ -8,13 +8,11 @@ public class runtimeTimer implements Runnable { // 런타임 측정을 위한 �
 	private boolean flag; // 타이머 정지를 위한 boolean
 	private mainFrame F; // 강제종료를 위한 메인프레임
 	private sendCmd Send; // 커멘드창의 강제종료를 위한 cmd객체
-	private MainPage Main;
 	public runtimeTimer(mainFrame f, sendCmd send, MainPage main) {
 		F = f;
 		second = 0;
 		flag = false;
 		Send = send;
-		Main = main;
 
 	}
 

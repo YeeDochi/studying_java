@@ -6,7 +6,7 @@ public class sendCmd { // 대망의 컴파일을 위한 Cmd클레스
 
 	private String outputMessage = "";
 	private ProcessBuilder b;
-	Process p;
+	private Process p;
 	private String varError =" "; // --release 8의 삽입을 위한 변수
 	
 	public void getCmd(String name) { // 저장된 .java파일을 컴파일 한다.

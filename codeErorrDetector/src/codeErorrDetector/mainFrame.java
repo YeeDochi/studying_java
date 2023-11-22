@@ -22,6 +22,7 @@ public class mainFrame extends JFrame {
 	private DotJava dot = new DotJava(); // 저장 객체
 	private sendCmd send = new sendCmd(); // 컴파일 객체
 
+	private boolean thisWindow = false;
 	// -----------메뉴----------
 	private JMenu runMenu;
 	private JMenuBar mb;
@@ -107,6 +108,8 @@ public class mainFrame extends JFrame {
 
 	public void changePanel() { // 창전환 메소드
 		cards.next(this.getContentPane());
+		if(thisWindow)thisWindow = false; // 새파일시 현제 창을 확인하기 위함
+		else thisWindow = true; // 이 상태가 결과창
 	}
 
 	private class WindowCl implements WindowListener { // x로 종료시 메시지 출력
@@ -196,8 +199,10 @@ public class mainFrame extends JFrame {
 			case "NewFile": // 새로운 클레스 이름을 받아오며 초기화
 				audio("경고음");
 				int result = JOptionPane.showConfirmDialog(null, "초기화 하시겠습니까?");
-				if (result == JOptionPane.YES_OPTION)
+				if (result == JOptionPane.YES_OPTION) {
+					if(thisWindow)changePanel(); // 결과창이라면 다시 돌아가기
 					main.Reset(); // 초기화 함수
+					}
 				System.out.print("new");
 				break;
 

@@ -124,7 +124,7 @@ public class MainPage extends JPanel {
 
 	public String returnName() { // 파일 이름 리턴
 		return name;
-	}
+	}	
 
 	public String returnCodeData() { // 코드 리턴
 		return comments.getText();

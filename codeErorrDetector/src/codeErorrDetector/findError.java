@@ -11,7 +11,7 @@ public class findError { // 받아온 스트링에서 에러코드를 검출해�
 
 	private String Error = "";
 	private String Message="";
-	boolean a;
+	private boolean a;
 
 	public String findError_M(String resultData) {
 		a = true; // 만약 계속 true라면 에러 없음
