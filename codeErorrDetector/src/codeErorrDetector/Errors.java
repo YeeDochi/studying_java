@@ -31,7 +31,7 @@ public class Errors extends JLabel { // 에러 클레스는 에러 메세지를 
 			put("java.lang.NoClassDefFoundError:", "<html><h2>클레스도 제대로<br>못쓰는 허접~</h2><h4>자바공부 다시하고와~~</h4>");
 			put("java.lang.UnsupportedClassVersionError:",
 					"<html><h2>Javac와 Java의 버전이 맞질 않네요</h2><h4>자바 버전을 맞춰야겠네요,</h4><h4>다시 컴파일 해 보시겠어요?</h4>");
-			// put("","<html><h2></h2><h4></h4>"); /ㅊ .
+			// put("","<html><h2></h2><h4></h4>"); 
 		}
 	};
 
