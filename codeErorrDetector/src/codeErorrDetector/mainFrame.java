@@ -1,5 +1,6 @@
 package codeErorrDetector;
 
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -32,8 +33,10 @@ public class mainFrame extends JFrame {
 
 	public mainFrame() {
 		URL image = mainFrame.class.getClassLoader().getResource("ErrorCodeDetectorIcon.png");
+		//System.out.print(image);
 		// exe환경에서 작동하도록 경로를 따와서 적용하도록 변경
 		ImageIcon img = new ImageIcon(image);
+		//ImageIcon img = new ImageIcon("./icon/ErrorCodeDetectorIcon.png");
 		setIconImage(img.getImage());
 		send.initDir(); // 폴터준비
 		this.setTitle("ErrorDetector");
