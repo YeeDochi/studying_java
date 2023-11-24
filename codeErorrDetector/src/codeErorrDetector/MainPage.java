@@ -30,7 +30,7 @@ public class MainPage extends JPanel {
 		this.Reset(); // 초기화
 		F = f; // 받아온 매게변수를 필드 멤버에 저장
 		End = end;
-		this.send =send;
+		this.send = send;
 		this.setLayout(new BorderLayout());
 		// ---------입력창------------
 		CommentWindow.add(comments); // 입력창을 띄우는 페널
@@ -52,13 +52,13 @@ public class MainPage extends JPanel {
 		ButtonWindow.add(change, 1, 0);
 		this.add(ButtonWindow, BorderLayout.EAST);
 		// --------카운터-------------- // 창에 시간초를 표기하고 싶었으나 무리였다.
-		/*for(int i = 2;i<7;i++) {
+		for (int i = 2; i < 7; i++) {
 			ButtonWindow.add(new JLabel());
 		}
 		ButtonWindow.add(counter);
-		counter.setText("00.000");
-		counter.setFont(new Font("Malgun Gothic", Font.BOLD, 20));*/
-		//--------------------------
+		counter.setText("0.0000");
+		counter.setFont(new Font("Malgun Gothic", Font.BOLD, 20));
+		// --------------------------
 		this.setWhite(); // 기본모드 세팅
 		this.setSize(600, 400);
 		this.setVisible(true);
@@ -108,29 +108,32 @@ public class MainPage extends JPanel {
 	}
 
 	public void CompileRun() {
-		runtimeTimer timer = new runtimeTimer(F, send, this);
-		Thread th = new Thread(timer); // 쓰레드 컴파일 타임 측정
-		th.start();
-		data = comments.getText(); // 텍스트 읽어옴
-		try {
-			dot.saveAsDotJava("C:\\testCode\\", data, name);// 자바파일로 변경
-			send.getCmd(name);// 변경된 파일의 이름을 넘겨서 컴파일
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		timer.stopTimer(); // 타이머정지
-		End.getData(send.returnErrorMassage(), timer.returnSecond()); // 결과창에 데이터 넘기기
+		runtimeTimer timer = new runtimeTimer(F, send, this, End);
+		compileThread compile = new compileThread(send, dot, End, this, timer,F);
+		Thread th1 = new Thread(timer); // 쓰레드 컴파일 타임 측정
+		Thread th2 = new Thread(compile); // 쓰레드 컴파일 
+		End.compile(); // 결과부 컴파일중 세팅
+		th1.start(); // 타이머 시작
+		th2.start(); // 컴파일 시작
+		/*
+		 * data = comments.getText(); // 텍스트 읽어옴 try {
+		 * dot.saveAsDotJava("C:\\testCode\\", data, name);// 자바파일로 변경
+		 * send.getCmd(name);// 변경된 파일의 이름을 넘겨서 컴파일 } catch (Exception ex) {
+		 * ex.printStackTrace(); } timer.stopTimer(); // 타이머정지
+		 */
+		// End.getData(send.returnErrorMassage(), timer.returnSecond()); // 결과창에 데이터 넘기기
+		// Timer_count = timer.returnSecond();
 	}
 
 	public String returnName() { // 파일 이름 리턴
 		return name;
-	}	
+	}
 
 	public String returnCodeData() { // 코드 리턴
 		return comments.getText();
 	}
-	
-	public JLabel returnTimer() {
+
+	public JLabel returnTimer() { // 타이머 라벨 리턴
 		return counter;
 	}
 
